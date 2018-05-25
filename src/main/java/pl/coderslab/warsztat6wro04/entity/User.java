@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name="users")
@@ -42,8 +43,13 @@ public class User {
 		return password;
 	}
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
+	
+	public boolean isPasswordOk(String passwordToCheck) {
+		return BCrypt.checkpw(passwordToCheck, this.password);
+	}	
+	
 	public boolean isEnabled() {
 		return enabled;
 	}
