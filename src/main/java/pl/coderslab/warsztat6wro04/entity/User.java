@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.mindrot.jbcrypt.BCrypt;
 
+import pl.coderslab.warsztat6wro04.model.UserDto;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -24,8 +26,19 @@ public class User {
 	private String password;
 	private boolean enabled;
 	@Column(unique=true)
+	@NotBlank
 	@Email
 	private String email;
+
+	public User() {
+	}
+	
+	public User(UserDto userData) {
+		setId(userData.getId());
+		setUsername(userData.getUsername());
+		setEmail(userData.getEmail());
+		setPassword(userData.getPassword());
+	}
 	
 	public long getId() {
 		return id;

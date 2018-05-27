@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pl.coderslab.warsztat6wro04.entity.User;
+import pl.coderslab.warsztat6wro04.model.UserDto;
 import pl.coderslab.warsztat6wro04.repository.UserRepository;
 
 @Controller
@@ -22,19 +23,19 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		User userData = new User();
+		UserDto userData = new UserDto();
 		model.addAttribute("userData", userData);
 		
 		return "user/register";
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(@Valid @ModelAttribute("userData") User userData, BindingResult br, Model model) {
+	public String registerPost(@Valid @ModelAttribute("userData") UserDto userData, BindingResult br, Model model) {
 		if(br.hasErrors()) {
 			return "user/register";
 		}
 		
-		this.userRepository.save(userData);
+		this.userRepository.save(new User(userData));
 		
 		return "redirect:/";
 	}
